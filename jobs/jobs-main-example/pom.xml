@@ -22,7 +22,7 @@
         <dependency>
             <groupId>org.powerimo</groupId>
             <artifactId>powerimo-jobs</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${jobs.lib.version}</version>
         </dependency>
 
         <dependency>
