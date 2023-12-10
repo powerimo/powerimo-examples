@@ -1,27 +1,27 @@
 package org.examples.jobs;
 
 import lombok.extern.slf4j.Slf4j;
+import org.powerimo.jobs.DescriptorRepository;
 import org.powerimo.jobs.JobDescriptor;
-import org.powerimo.jobs.Repository;
+import org.powerimo.jobs.RunnerConfiguration;
 import org.powerimo.jobs.StepDescriptor;
-import org.powerimo.jobs.std.StdInMemoryStateRepository;
-import org.powerimo.jobs.std.StdJob;
-import org.powerimo.jobs.std.StdRepository;
-import org.powerimo.jobs.std.StdRunner;
+import org.powerimo.jobs.std.*;
 
 @Slf4j
 public class App {
 
     public static void main(String[] args) {
-        final Repository repository = new StdRepository();
-        var runner = new StdRunner(repository);
-        runner.setStateRepository(new StdInMemoryStateRepository());
+        final RunnerConfiguration runnerConfiguration = StdRunnerConfiguration.builder()
+                .createMissing(true)
+                .build();
+        final DescriptorRepository descriptorRepository = runnerConfiguration.getDescriptorRepository();
+        var runner = new StdRunner(runnerConfiguration);
 
-        repository.addJobDescriptor(JobDescriptor.create("Job1", "Job 1 name", StdJob.class));
-        repository.addStepDescriptor(StepDescriptor.of("Step01", "Step 1", 1, SleepStep.class, "Job1"));
-        repository.addStepDescriptor(StepDescriptor.of("Step02", "Step 2 (one more time)", 2, SleepStep.class, "Job1"));
-        repository.addStepDescriptor(StepDescriptor.of("JobStateList", "Print job state", 30, ListJobsStep.class, "Job1"));
-        repository.addStepDescriptor(StepDescriptor.of("StepStateList", "Print step state", 40, ListStepsStep.class, "Job1"));
+        descriptorRepository.addJobDescriptor(StdJobDescriptor.create("Job1", "Job 1 name", StdJob.class));
+        descriptorRepository.addStepDescriptor(StdStepDescriptor.of("Step01", "Step 1", 1, SleepStep.class, "Job1"));
+        descriptorRepository.addStepDescriptor(StdStepDescriptor.of("Step02", "Step 2 (one more time)", 2, SleepStep.class, "Job1"));
+        descriptorRepository.addStepDescriptor(StdStepDescriptor.of("JobStateList", "Print job state", 30, ListJobsStep.class, "Job1"));
+        descriptorRepository.addStepDescriptor(StdStepDescriptor.of("StepStateList", "Print step state", 40, ListStepsStep.class, "Job1"));
 
         try {
             runner.run("Job1");

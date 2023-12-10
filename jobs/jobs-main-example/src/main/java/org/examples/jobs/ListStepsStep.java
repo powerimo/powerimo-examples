@@ -1,26 +1,23 @@
 package org.examples.jobs;
 
 import lombok.extern.slf4j.Slf4j;
-import org.powerimo.jobs.JobContext;
-import org.powerimo.jobs.Result;
-import org.powerimo.jobs.Step;
-import org.powerimo.jobs.StepResult;
+import org.powerimo.jobs.*;
+import org.powerimo.jobs.base.AbstractStep;
+import org.powerimo.jobs.std.StdStepResult;
 
 @Slf4j
-public class ListStepsStep implements Step {
+public class ListStepsStep extends AbstractStep {
 
     @Override
-    public StepResult run(JobContext jobContext) throws Exception {
+    protected StepResult doRun() {
         log.info("Steps state list");
-        final StepResult result = new StepResult();
+        final StdStepResult result = new StdStepResult();
 
-        if (jobContext.getRunner() != null && jobContext.getRunner().getStateRepository() != null) {
-            var list = jobContext.getRunner().getStateRepository().getStepStateList();
-            list.forEach(item -> {
-                result.getCounterRecordsTotal().incrementAndGet();
-                log.info("step: {}", item);
-            });
-        }
+        var list = getContext().getRunner().getConfiguration().getStateRepository().getJobStepsStateList(getContext().getJobState().getId());
+        list.forEach(item -> {
+            result.getCounterTotal().incrementAndGet();
+            log.info("step: {}", item);
+        });
 
         result.setResult(Result.SUCCESS);
         return result;

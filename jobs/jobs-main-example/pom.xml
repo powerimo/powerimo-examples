@@ -21,7 +21,7 @@
     <dependencies>
         <dependency>
             <groupId>org.powerimo</groupId>
-            <artifactId>powerimo-jobs</artifactId>
+            <artifactId>powerimo-jobs-core</artifactId>
             <version>${jobs.lib.version}</version>
         </dependency>
 

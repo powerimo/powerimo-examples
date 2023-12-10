@@ -1,19 +1,15 @@
 package org.examples.jobs;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.powerimo.jobs.JobContext;
-import org.powerimo.jobs.Result;
-import org.powerimo.jobs.Step;
-import org.powerimo.jobs.StepResult;
+import org.powerimo.jobs.*;
+import org.powerimo.jobs.std.StdStepResult;
 
 @Slf4j
 public class SleepStep implements Step {
-    final StepResult stepResult = new StepResult();
+    final StdStepResult stepResult = new StdStepResult();
 
     @Override
-    @SneakyThrows
-    public StepResult run(JobContext jobContext) {
+    public StepResult run(JobContext jobContext, StepDescriptor stepDescriptor) throws Exception {
         // DO SOMETHING
         log.info("Some job here");
 
@@ -22,8 +18,8 @@ public class SleepStep implements Step {
         }
 
         stepResult.setResult(Result.SUCCESS);
-        stepResult.getCounterRecordsTotal().set(1L);
+        stepResult.setCountErrors(1L);
         return stepResult;
     }
-
 }
+

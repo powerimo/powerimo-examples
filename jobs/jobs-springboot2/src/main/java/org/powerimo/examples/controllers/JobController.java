@@ -7,6 +7,7 @@ import org.powerimo.examples.services.JobService;
 import org.powerimo.jobs.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -18,29 +19,28 @@ public class JobController {
 
     @GetMapping("running")
     public List<JobStateDto> getJobs() {
-        var list = runner.getStateRepository().getJobStateList();
+        var list = jobService.getRunningJobs();
         return JobStateDto.of(list);
-    }
-
-    @GetMapping("running/steps")
-    public List<StepStateDto> getSteps() {
-        var list = runner.getStateRepository().getStepStateList();
-        return StepStateDto.of(list);
     }
 
     @GetMapping("job-descriptors")
     public List<JobDescriptor> getJobDescriptors() {
-        return runner.getRepository().getJobDescriptors();
+        return jobService.getDescriptorRepository().getJobDescriptors();
     }
 
     @GetMapping("job-descriptors/{code}/steps")
     public List<StepDescriptor> getStepDescriptors(@PathVariable String code) {
-        return runner.getRepository().getStepDescriptors(code);
+        return jobService.getDescriptorRepository().getStepDescriptors(code);
     }
 
     @PostMapping("{code}/run")
-    public JobStateDto postJobRun(@PathVariable String code) throws NoSuchMethodException {
-        var info = jobService.runJob(code);
-        return JobStateDto.of(info);
+    public JobStateDto postJobRun(@PathVariable String code, @RequestBody HashMap<String, String> params) throws NoSuchMethodException {
+        var state = jobService.runJob(code, params);
+        return JobStateDto.of(state);
+    }
+
+    @GetMapping("db")
+    public List<JobStateDto> getJDbobStateList() {
+        return jobService.getDbJobs();
     }
 }
