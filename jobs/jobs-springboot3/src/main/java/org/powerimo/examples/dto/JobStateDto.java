@@ -4,7 +4,7 @@ import lombok.Data;
 import org.powerimo.jobs.JobResult;
 import org.powerimo.jobs.JobState;
 import org.powerimo.jobs.Status;
-import org.powerimo.jobs.boot2.entities.JobEntity;
+import org.powerimo.jobs.boot3.entities.JobEntity;
 import org.powerimo.jobs.std.StdJobResult;
 
 import java.time.Duration;

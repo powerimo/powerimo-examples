@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: classpath:/db/changelog/db.changelog-powerimo-jobs.yaml
+  - changeSet:
+      author: "PowerimoExamples"
+      id: "Powerimo.Examples.Jobs.Boot2.001"
+      changes:
+        - sql:
+            "select 1 as res;"
