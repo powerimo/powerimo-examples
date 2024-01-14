@@ -12,6 +12,7 @@
         <module>jobs/jobs-main-example</module>
         <module>jobs/jobs-springboot2</module>
         <module>jobs/jobs-springboot3</module>
+        <module>nss/nss-http-client</module>
     </modules>
 
     <properties>
